@@ -1,0 +1,80 @@
+
+/* General webpage styling */
+body {
+    background-color: #f0f4f8;
+    font-family: Arial, sans-serif;
+    margin: 30px;
+    color: #333333;
+}
+
+/* Main headings */
+h1 {
+    color: #163a70;
+    text-align: center;
+}
+
+/* Section headings */
+h2 {
+    color: #00796b;
+    margin-top: 30px;
+}
+
+/* Paragraph styling */
+p {
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+/* Link styling */
+a {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #e65100;
+    text-decoration: underline;
+}
+
+/* Company logo */
+img {
+    width: 250px;
+    margin-top: 15px;
+}
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: white;
+    border: 2px solid #dce5ee;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Company button */
+.company-button {
+    display: inline-block;
+    background-color: #00796b;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+/* Button hover effect */
+.company-button:hover {
+    background-color: #004d40;
+    color: white;
+}
+
+/* Company logo */
+.company-logo {
+    width: 220px;
+    height: auto;
+    display: block;
+    margin-top: 20px;
+    border-radius: 10px;
+}
