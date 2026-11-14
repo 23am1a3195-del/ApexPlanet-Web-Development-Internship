@@ -1,75 +1,114 @@
 
-// Contact Form
+// CONTACT FORM
+
 const contactForm = document.getElementById("contactForm");
+const formMessage = document.getElementById("formMessage");
 
 contactForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const message = document.getElementById("message").value.trim();
-
-    const formMessage = document.getElementById("formMessage");
-
-    if (name === "" || email === "" || message === "") {
-        formMessage.textContent = "Please fill in all fields!";
-        formMessage.style.color = "red";
-        return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        formMessage.textContent = "Please enter a valid email!";
-        formMessage.style.color = "red";
-        return;
-    }
-
-    formMessage.textContent = "Thank you! Your message is ready.";
-    formMessage.style.color = "green";
+    formMessage.textContent =
+        "Thank you! Your message is ready.";
 
     contactForm.reset();
 });
 
 
-// To-Do List
+// TO-DO LIST
+
 const taskInput = document.getElementById("taskInput");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskList = document.getElementById("taskList");
 
-addTaskBtn.addEventListener("click", function() {
+// Load saved tasks from Local Storage
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-    const task = taskInput.value.trim();
 
-    if (task === "") {
+// Save tasks to Local Storage
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+
+// Display tasks
+function displayTasks() {
+    taskList.innerHTML = "";
+
+    tasks.forEach(function(task, index) {
+
+        const li = document.createElement("li");
+
+        if (task.completed) {
+            li.classList.add("completed");
+        }
+
+        // Checkbox
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = task.completed;
+
+        checkbox.addEventListener("change", function() {
+            tasks[index].completed = checkbox.checked;
+            saveTasks();
+            displayTasks();
+        });
+
+        // Task text
+        const span = document.createElement("span");
+        span.textContent = task.text;
+
+        // Delete button
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.className = "delete-btn";
+
+        deleteBtn.addEventListener("click", function() {
+            tasks.splice(index, 1);
+            saveTasks();
+            displayTasks();
+        });
+
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
+
+        taskList.appendChild(li);
+    });
+}
+
+
+// Add new task
+function addTask() {
+    const taskText = taskInput.value.trim();
+
+    if (taskText === "") {
         alert("Please enter a task!");
         return;
     }
 
-    const li = document.createElement("li");
-
-    const taskText = document.createElement("span");
-    taskText.textContent = task;
-
-    // Complete task by clicking its text
-    taskText.addEventListener("click", function() {
-        taskText.style.textDecoration =
-            taskText.style.textDecoration === "line-through"
-            ? "none" : "line-through";
+    tasks.push({
+        text: taskText,
+        completed: false
     });
 
-    // Delete button
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-
-    deleteBtn.style.marginLeft = "15px";
-
-    deleteBtn.addEventListener("click", function() {
-        li.remove();
-    });
-
-    li.appendChild(taskText);
-    li.appendChild(deleteBtn);
-
-    taskList.appendChild(li);
+    saveTasks();
+    displayTasks();
 
     taskInput.value = "";
+}
+
+
+// Add button click
+addTaskBtn.addEventListener("click", addTask);
+
+
+// Press Enter to add task
+taskInput.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        addTask();
+    }
 });
+
+
+// Display saved tasks when page loads
+displayTasks();
